@@ -2,22 +2,26 @@ import 'package:flutter/material.dart';
 
 // Custom AppBar widget
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text('EcoFront'),
-      backgroundColor: Color.fromARGB(255, 102, 215, 106),
+      title: const Text('EcoSeg'),
+      backgroundColor: const Color.fromARGB(255, 102, 215, 106),
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-class AboutScreen extends StatelessWidget {
+class SmartBinScreen extends StatelessWidget {
+  const SmartBinScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       appBar: CustomAppBar(), // Use the CustomAppBar here
       body: Padding(
         padding: EdgeInsets.all(20.0),

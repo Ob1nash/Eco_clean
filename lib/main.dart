@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
-import 'screens/shop_screen.dart';
-import 'screens/tasks_screen.dart';
-import 'screens/eco_coin_screen.dart';
-import 'screens/about_screen.dart';
+import 'screens/ecomart.dart';
+import 'screens/ecocollect.dart';
+import 'screens/recyclepage.dart';
+import 'screens/smartbin.dart';
 import 'widgets/bottom_navigation_bar.dart';
 
 void main() {
@@ -16,21 +16,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int _currentIndex = 0;
+  int _currentIndex = 2; // Set initial index to 2 for the HomeScreen
 
   final List<Widget> _screens = [
+    EcoCollectScreen(),
+    EcomartScreen(),
     HomeScreen(),
-    ShopScreen(),
-    TasksScreen(),
-    EcoCoinScreen(),
-    AboutScreen(),
+    RecyclePageScreen(),
+    SmartBinScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'EcoFront',
+      title: 'EcoSeg',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
@@ -38,36 +38,32 @@ class _MyAppState extends State<MyApp> {
         body: _screens[_currentIndex],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
+          onTap: onTabTapped,
           items: [
+            BottomNavigationBarItem(
+              icon: Image.asset('assets/icons/EcoCollect.png', width: 20, height: 20,),
+              label: 'Eco Collect',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart),
+              label: 'Eco Market',
+            ),
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart),
-              label: 'Shop',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.assignment),
-              label: 'Tasks',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.monetization_on),
-              label: 'Eco Coins',
+              label: 'Nearby Recycle',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.info),
-              label: 'About',
+              label: 'Nearby Smart Bin',
             ),
           ],
           backgroundColor: Colors.white,
-          selectedItemColor: Colors.green,
-          unselectedItemColor: Colors.grey[600],
+          selectedItemColor: Color.fromARGB(255, 141, 233, 98),
+          unselectedItemColor: Color.fromARGB(255, 37, 139, 2),
           elevation: 8.0,
           selectedFontSize: 14.0,
           unselectedFontSize: 12.0,
@@ -77,5 +73,11 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 }

@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class ProductPage extends StatelessWidget {
   final String imageUrl;
 
-  ProductPage({required this.imageUrl});
+  const ProductPage({super.key, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Product Details'),
-        backgroundColor: Color.fromARGB(255, 102, 215, 106),
+        title: const Text('Product Details'),
+        backgroundColor: const Color.fromARGB(255, 102, 215, 106),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -32,25 +32,25 @@ class ProductPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Product Name',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
                     ),
                   ),
-                  SizedBox(height: 8.0),
-                  Text(
+                  const SizedBox(height: 8.0),
+                  const Text(
                     'Product Description',
                     style: TextStyle(
                       fontSize: 16.0,
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         '\$99.99', // Example price
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -62,9 +62,9 @@ class ProductPage extends StatelessWidget {
                           // Add buy functionality
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF75EE7B)),
+                          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF75EE7B)),
                         ),
-                        child: Text('Buy', style: TextStyle(color: Colors.white)),
+                        child: const Text('Buy', style: TextStyle(color: Colors.white)),
                       ),
                     ],
                   ),

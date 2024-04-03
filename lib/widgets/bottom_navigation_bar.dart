@@ -4,7 +4,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
 
-  BottomNavigationBarWidget({required this.currentIndex, required this.onTap});
+  const BottomNavigationBarWidget({super.key, required this.currentIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
       onTap: onTap,
       selectedItemColor: Colors.green, // Set color for the selected icon
       unselectedItemColor: Colors.grey, // Set color for the unselected icon
-      items: [
+      items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Home',
