@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 
 class RecyclePageScreen extends StatelessWidget {
- @override
- Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Recycle Page'),
@@ -16,23 +14,15 @@ class RecyclePageScreen extends StatelessWidget {
           Container(
             height: 200, // adjust the height of the map container
             color: Colors.blueGrey, // change the color as needed
-            child: FlutterMap(
-              options: MapOptions(
-                center: LatLng(51.509364, -0.128928), // Center of the map
-                zoom: 9.2, // Zoom level
+            child: const Center(
+              child: Text(
+                'Map Placeholder', // replace with your map widget
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
-              nonRotatedChildren: [
-                AttributionWidget.defaultWidget(
-                 source: 'OpenStreetMap contributors',
-                 onSourceTapped: null,
-                ),
-              ],
-              children: [
-                TileLayer(
-                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                 userAgentPackageName: 'com.example.app',
-                ),
-              ],
             ),
           ),
           SizedBox(height: 20), // add spacing between the map and buttons
@@ -42,25 +32,25 @@ class RecyclePageScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-                 onPressed: () {
+                  onPressed: () {
                     // handle button press for lights
-                 },
-                 icon: Icon(Icons.lightbulb, size: 20),
-                 label: Text('Lights'),
+                  },
+                  icon: Icon(Icons.lightbulb, size: 20),
+                  label: Text('Lights'),
                 ),
                 ElevatedButton.icon(
-                 onPressed: () {
+                  onPressed: () {
                     // handle button press for battery
-                 },
-                 icon: Icon(Icons.battery_full, size: 20),
-                 label: Text('Battery'),
+                  },
+                  icon: Icon(Icons.battery_full, size: 20),
+                  label: Text('Battery'),
                 ),
                 ElevatedButton.icon(
-                 onPressed: () {
+                  onPressed: () {
                     // handle button press for paper and card boards
-                 },
-                 icon: Icon(Icons.description, size: 20),
-                 label: Text('Paper and Card Boards'),
+                  },
+                  icon: Icon(Icons.description, size: 20),
+                  label: Text('Paper and Card Boards'),
                 ),
               ],
             ),
@@ -68,5 +58,5 @@ class RecyclePageScreen extends StatelessWidget {
         ],
       ),
     );
- }
+  }
 }

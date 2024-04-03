@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class EcoCollectScreen extends StatefulWidget {
   const EcoCollectScreen({Key? key});
@@ -56,7 +57,6 @@ class _EcoCollectScreenState extends State<EcoCollectScreen> {
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                // Handle submit button press
                 _submitForm();
               },
               child: Text('Submit'),
@@ -98,20 +98,19 @@ class _EcoCollectScreenState extends State<EcoCollectScreen> {
   }
 
   Future<void> _openFileExplorer(BuildContext context) async {
-  FilePickerResult? result = await FilePicker.platform.pickFiles();
-  if (result != null) {
-    setState(() {
-      if (kIsWeb) {
-        // For web platform, use the bytes property
-        _selectedImage = File.fromRawPath(result.files.single.bytes!);
-      } else {
-        // For mobile platforms, use the path property
-        _selectedImage = File(result.files.single.path!);
-      }
-    });
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      setState(() {
+        if (kIsWeb) {
+          // For web platform, use the bytes property
+          _selectedImage = File.fromRawPath(result.files.single.bytes!);
+        } else {
+          // For mobile platforms, use the path property
+          _selectedImage = File(result.files.single.path!);
+        }
+      });
+    }
   }
-}
-
 
   void _submitForm() {
     String wasteType = _wasteTypeController.text;
