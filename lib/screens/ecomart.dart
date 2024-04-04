@@ -1,18 +1,37 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'product_page.dart';
 
-class EcomartScreen extends StatelessWidget {
-  final List<String> dummyImageUrls = const [
-    'https://cdn.shopify.com/s/files/1/0070/7032/files/blank_tote_merch_swag_fashion_print_on_demand.jpg?v=1689965049',
-    'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTExL3JtMzYyLTAxYS1tb2NrdXAuanBn.jpg',
-    'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?cs=srgb&dl=pexels-karolina-grabowska-4041392.jpg&fm=jpg',
-    'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?cs=srgb&dl=pexels-karolina-grabowska-4041392.jpg&fm=jpg',
-  ];
+class EcomartScreen extends StatefulWidget {
+ @override
+ _EcomartScreenState createState() => _EcomartScreenState();
+}
 
-  const EcomartScreen({Key? key});
+class _EcomartScreenState extends State<EcomartScreen> {
+ List<Map<String, dynamic>> products = [];
 
-  @override
-  Widget build(BuildContext context) {
+ @override
+ void initState() {
+    super.initState();
+    fetchData();
+ }
+
+ Future<void> fetchData() async {
+    final response = await http.get(Uri.parse('https://omnisynctechnologies.com/api/eco-marketplace'));
+
+    if (response.statusCode == 200) {
+      setState(() {
+        products = List<Map<String, dynamic>>.from(jsonDecode(response.body));
+      });
+    } else {
+      throw Exception('Failed to load data');
+    }
+ }
+
+ @override
+ Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Shop'),
@@ -29,7 +48,7 @@ class EcomartScreen extends StatelessWidget {
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemCount: dummyImageUrls.length,
+        itemCount: products.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 16.0,
@@ -37,15 +56,14 @@ class EcomartScreen extends StatelessWidget {
           childAspectRatio: 0.75,
         ),
         itemBuilder: (context, index) {
-          double price = 99.99; // Example price
-          int coins = 1000; // Example coins
-          return _buildProductCard(context, dummyImageUrls[index], price, coins);
+          final product = products[index];
+          return _buildProductCard(context, product);
         },
       ),
     );
-  }
+ }
 
-  Widget _buildProductCard(BuildContext context, String imageUrl, double price, int coins) {
+ Widget _buildProductCard(BuildContext context, Map<String, dynamic> product) {
     return Card(
       elevation: 4.0,
       shape: RoundedRectangleBorder(
@@ -60,12 +78,14 @@ class EcomartScreen extends StatelessWidget {
                 topLeft: Radius.circular(10.0),
                 topRight: Radius.circular(10.0),
               ),
-              child: imageUrl.isNotEmpty
-                  ? Image.network(
-                      imageUrl,
+              child: product['image'] != null
+                 ? CachedNetworkImage(
+                      imageUrl: product['image'],
                       fit: BoxFit.cover,
+                      placeholder: (context, url) => CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
                     )
-                  : Container(color: Colors.grey),
+                 : Container(color: Colors.grey),
             ),
           ),
           Padding(
@@ -73,26 +93,26 @@ class EcomartScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Product Name',
-                  style: TextStyle(
+                Text(
+                 product['product_name'],
+                 style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
-                  ),
+                 ),
                 ),
                 const SizedBox(height: 4.0),
-                const Text(
-                  'Product Description',
-                  style: TextStyle(
+                Text(
+                 product['description'],
+                 style: const TextStyle(
                     fontSize: 14.0,
-                  ),
+                 ),
                 ),
                 const SizedBox(height: 4.0),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
                     Text(
-                      '\$$price',
+                      '\$${product['price']}',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16.0,
@@ -101,7 +121,7 @@ class EcomartScreen extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '$coins',
+                          '${product['quantity']}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16.0,
@@ -113,17 +133,17 @@ class EcomartScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ],
+                 ],
                 ),
                 const SizedBox(height: 4.0),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
+                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                 children: [
                     SizedBox(
                       width: 80, // Adjusted button width
                       child: ElevatedButton(
                         onPressed: () {
-                          navigateToProductPage(context, imageUrl);
+                          navigateToProductPage(context, product['image']);
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF75EE7B)),
@@ -137,7 +157,7 @@ class EcomartScreen extends StatelessWidget {
                       width: 80, // Adjusted button width
                       child: ElevatedButton(
                         onPressed: () {
-                          navigateToProductPage(context, imageUrl);
+                          navigateToProductPage(context, product['image']);
                         },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF75EE7B)),
@@ -147,7 +167,7 @@ class EcomartScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ],
+                 ],
                 ),
               ],
             ),
@@ -155,19 +175,19 @@ class EcomartScreen extends StatelessWidget {
         ],
       ),
     );
-  }
+ }
 
-  void navigateToProductPage(BuildContext context, String imageUrl) {
+ void navigateToProductPage(BuildContext context, String imageUrl) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ProductPage(imageUrl: imageUrl)),
     );
-  }
+ }
 }
 
 class ProductSearchDelegate extends SearchDelegate<String> {
-  @override
-  List<Widget> buildActions(BuildContext context) {
+ @override
+ List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
         onPressed: () {
@@ -176,27 +196,27 @@ class ProductSearchDelegate extends SearchDelegate<String> {
         icon: Icon(Icons.clear),
       ),
     ];
-  }
+ }
 
-  @override
-  Widget buildLeading(BuildContext context) {
+ @override
+ Widget buildLeading(BuildContext context) {
     return IconButton(
       onPressed: () {
         close(context, '');
       },
       icon: Icon(Icons.arrow_back),
     );
-  }
+ }
 
-  @override
-  Widget buildResults(BuildContext context) {
+ @override
+ Widget buildResults(BuildContext context) {
     // Implement search results based on the query
     return Container();
-  }
+ }
 
-  @override
-  Widget buildSuggestions(BuildContext context) {
+ @override
+ Widget buildSuggestions(BuildContext context) {
     // Implement suggestions based on the query
     return Container();
-  }
+ }
 }

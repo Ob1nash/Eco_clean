@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 // Custom AppBar widget
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  const CustomAppBar({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('EcoSeg'),
+      title: const Text('EcoClean'),
       backgroundColor: const Color.fromARGB(255, 102, 215, 106),
     );
   }
@@ -16,12 +18,37 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-class SmartBinScreen extends StatelessWidget {
-  const SmartBinScreen({super.key});
+class SmartBinScreen extends StatefulWidget {
+  const SmartBinScreen({Key? key}) : super(key: key);
+
+  @override
+  _SmartBinScreenState createState() => _SmartBinScreenState();
+}
+
+class _SmartBinScreenState extends State<SmartBinScreen> {
+  List<Map<String, dynamic>> smartDustbins = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final response = await http.get(Uri.parse('https://omnisynctechnologies.com/api/smart-dustbins'));
+
+    if (response.statusCode == 200) {
+      setState(() {
+        smartDustbins = List<Map<String, dynamic>>.from(jsonDecode(response.body));
+      });
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       appBar: CustomAppBar(), // Use the CustomAppBar here
       body: Padding(
         padding: EdgeInsets.all(20.0),
@@ -29,23 +56,21 @@ class SmartBinScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'About EcoFront',
+              'Smart Dustbins',
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
-            Text(
-              'EcoFront is an app dedicated to promoting eco-friendly habits and activities. Our mission is to incentivize users to adopt sustainable practices in their daily lives by rewarding them for completing eco-friendly tasks.',
-              style: TextStyle(fontSize: 16.0),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Contact Us',
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Email: contact@ecofront.com\nPhone: 123-456-7890',
-              style: TextStyle(fontSize: 16.0),
+            Expanded(
+              child: ListView.builder(
+                itemCount: smartDustbins.length,
+                itemBuilder: (context, index) {
+                  final dustbin = smartDustbins[index];
+                  return ListTile(
+                    title: Text(dustbin['name']),
+                    subtitle: Text('Location: ${dustbin['location']}, Pincode: ${dustbin['pincode']}'),
+                  );
+                },
+              ),
             ),
           ],
         ),

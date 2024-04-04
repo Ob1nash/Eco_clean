@@ -53,12 +53,12 @@ class _MyAppState extends State<MyApp> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.monetization_on),
-              label: 'Nearby Recycle',
+              icon: Icon(Icons.recycling),
+              label: 'Recycle',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.info),
-              label: 'Nearby Smart Bin',
+              icon: Icon(Icons.delete),
+              label: 'Smart Bin',
             ),
           ],
           backgroundColor: Colors.white,

@@ -14,14 +14,10 @@ class RecyclePageScreen extends StatelessWidget {
           Container(
             height: 200, // adjust the height of the map container
             color: Colors.blueGrey, // change the color as needed
-            child: const Center(
-              child: Text(
-                'Map Placeholder', // replace with your map widget
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+            child: Center(
+              child: Image.asset(
+                'assets/icons/map_image.png', // path to your map image asset
+                fit: BoxFit.cover, // adjust the fit as needed
               ),
             ),
           ),
@@ -31,26 +27,34 @@ class RecyclePageScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // handle button press for lights
-                  },
-                  icon: Icon(Icons.lightbulb, size: 20),
-                  label: Text('Lights'),
+                Expanded( // Wrap the button with Expanded widget
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      // handle button press for lights
+                    },
+                    icon: Icon(Icons.lightbulb, size: 20),
+                    label: Text('Lights'),
+                  ),
                 ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // handle button press for battery
-                  },
-                  icon: Icon(Icons.battery_full, size: 20),
-                  label: Text('Battery'),
+                SizedBox(width: 10), // Add spacing between buttons
+                Expanded( // Wrap the button with Expanded widget
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      // handle button press for battery
+                    },
+                    icon: Icon(Icons.battery_full, size: 20),
+                    label: Text('Battery'),
+                  ),
                 ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // handle button press for paper and card boards
-                  },
-                  icon: Icon(Icons.description, size: 20),
-                  label: Text('Paper and Card Boards'),
+                SizedBox(width: 10), // Add spacing between buttons
+                Expanded( // Wrap the button with Expanded widget
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      // handle button press for paper and card boards
+                    },
+                    icon: Icon(Icons.description, size: 20),
+                    label: Text('Paper and Card Boards'),
+                  ),
                 ),
               ],
             ),

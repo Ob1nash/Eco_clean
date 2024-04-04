@@ -5,7 +5,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('EcoSeg'),
+        title: const Text('EcoClean'),
         backgroundColor: const Color.fromARGB(255, 102, 215, 106),
       ),
       body: SingleChildScrollView(
@@ -20,16 +20,16 @@ class HomeScreen extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: Center(
-                child: Text(
-                  'Welcome to Our Blog!',
-                  style: TextStyle(
-                    fontSize: 32.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+              // child: Center(
+              //   child: Text(
+              //     'Welcome to Our Blog!',
+              //     style: TextStyle(
+              //       fontSize: 32.0,
+              //       fontWeight: FontWeight.bold,
+              //       color: Colors.white,
+              //     ),
+              //   ),
+              // ),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
